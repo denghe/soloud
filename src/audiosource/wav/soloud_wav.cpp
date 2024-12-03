@@ -1,4 +1,4 @@
-/*
+﻿/*
 SoLoud audio engine
 Copyright (c) 2013-2018 Jari Komppa
 
@@ -29,9 +29,11 @@ freely, subject to the following restrictions:
 #include "soloud_wav.h"
 #include "soloud_file.h"
 #include "stb_vorbis.h"
+#ifndef DISABLE_MP3_WAV_FLAC
 #include "dr_mp3.h"
 #include "dr_wav.h"
 #include "dr_flac.h"
+#endif
 
 namespace SoLoud
 {
@@ -91,8 +93,8 @@ namespace SoLoud
 
 #define MAKEDWORD(a,b,c,d) (((d) << 24) | ((c) << 16) | ((b) << 8) | (a))
 
-	result Wav::loadwav(MemoryFile *aReader)
-	{
+	result Wav::loadwav(MemoryFile *aReader) {
+#ifndef DISABLE_MP3_WAV_FLAC
 		drwav decoder;
 
 		if (!drwav_init_memory(&decoder, aReader->getMemPtr(), aReader->length(),NULL))
@@ -128,7 +130,7 @@ namespace SoLoud
 			}
 		}
 		drwav_uninit(&decoder);
-
+#endif
 		return SO_NO_ERROR;
 	}
 
@@ -179,8 +181,8 @@ namespace SoLoud
 		return 0;
 	}
 
-	result Wav::loadmp3(MemoryFile *aReader)
-	{
+	result Wav::loadmp3(MemoryFile *aReader) {
+#ifndef DISABLE_MP3_WAV_FLAC
 		drmp3 decoder;
 
 		if (!drmp3_init_memory(&decoder, aReader->getMemPtr(), aReader->length(), NULL))
@@ -217,12 +219,12 @@ namespace SoLoud
 			}
 		}
 		drmp3_uninit(&decoder);
-
+#endif
 		return SO_NO_ERROR;
 	}
 
-	result Wav::loadflac(MemoryFile *aReader)
-	{
+	result Wav::loadflac(MemoryFile *aReader) {
+#ifndef DISABLE_MP3_WAV_FLAC
 		drflac *decoder = drflac_open_memory(aReader->mDataPtr, aReader->mDataLength, NULL);
 
 		if (!decoder)
@@ -259,7 +261,7 @@ namespace SoLoud
 			}
 		}
 		drflac_close(decoder);
-
+#endif
 		return SO_NO_ERROR;
 	}
 
