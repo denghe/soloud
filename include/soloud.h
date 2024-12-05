@@ -1,4 +1,4 @@
-/*
+﻿/*
 SoLoud audio engine
 Copyright (c) 2013-2020 Jari Komppa
 
@@ -80,13 +80,16 @@ freely, subject to the following restrictions:
 // Configuration defines
 
 // Maximum number of filters per stream
-#define FILTERS_PER_STREAM 8
+#define FILTERS_PER_STREAM 4
 
 // Number of samples to process on one go
 #define SAMPLE_GRANULARITY 512
 
 // Maximum number of concurrent voices (hard limit is 4095)
-#define VOICE_COUNT 1024
+#define VOICE_COUNT 128
+
+// Maximum number of active concurrent voices (hard limit is 255)
+#define MAX_ACTIVE_VOICE_COUNT 128
 
 // 1)mono, 2)stereo 4)quad 6)5.1 8)7.1
 #define MAX_CHANNELS 8

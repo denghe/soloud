@@ -1,4 +1,4 @@
-/*
+﻿/*
 SoLoud audio engine
 Copyright (c) 2013-2020 Jari Komppa
 
@@ -164,7 +164,7 @@ namespace SoLoud
 		m3dVelocity[1] = 0;
 		m3dVelocity[2] = 0;		
 		m3dSoundSpeed = 343.3f;
-		mMaxActiveVoices = 16;
+		mMaxActiveVoices = MAX_ACTIVE_VOICE_COUNT;
 		mHighestVoice = 0;
 		mResampleData = NULL;
 		mResampleDataOwner = NULL;
