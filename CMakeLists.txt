@@ -3,8 +3,8 @@ cmake_minimum_required(VERSION 3.24)
 project(soloud)
 
 #add_definitions(-DWITH_WINMM)
-add_definitions(-DWITH_WASAPI)			# low latency
-#add_definitions(-DWITH_XAUDIO2)
+#add_definitions(-DWITH_WASAPI)			# low latency
+add_definitions(-DWITH_XAUDIO2)
 
 add_definitions(-DDISABLE_MP3_WAV_FLAC)	# custom
 
@@ -18,8 +18,8 @@ file(GLOB SOLOUD_SRCS
 	src/filter/*.c*
 	src/audiosource/wav/*.c*
 	#src/backend/winmm/*.c*
-	src/backend/wasapi/*.c*
-	#src/backend/xaudio2/*.c*
+	#src/backend/wasapi/*.c*
+	src/backend/xaudio2/*.c*
 )
 
 add_library(soloud STATIC
