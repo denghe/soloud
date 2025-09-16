@@ -30,9 +30,9 @@ freely, subject to the following restrictions:
 #include "soloud_file.h"
 #include "stb_vorbis.h"
 #ifndef DISABLE_MP3_WAV_FLAC
-#include "dr_mp3.h"
+//#include "dr_mp3.h"
 #include "dr_wav.h"
-#include "dr_flac.h"
+//#include "dr_flac.h"
 #endif
 
 namespace SoLoud
@@ -181,89 +181,89 @@ namespace SoLoud
 		return 0;
 	}
 
-	result Wav::loadmp3(MemoryFile *aReader) {
-#ifndef DISABLE_MP3_WAV_FLAC
-		drmp3 decoder;
-
-		if (!drmp3_init_memory(&decoder, aReader->getMemPtr(), aReader->length(), NULL))
-		{
-			return FILE_LOAD_FAILED;
-		}
-
-		drmp3_uint64 samples = drmp3_get_pcm_frame_count(&decoder);
-
-		if (!samples)
-		{
-			drmp3_uninit(&decoder);
-			return FILE_LOAD_FAILED;
-		}
-
-		mData = new float[(unsigned int)(samples * decoder.channels)];
-		mBaseSamplerate = (float)decoder.sampleRate;
-		mSampleCount = (unsigned int)samples;
-		mChannels = decoder.channels;
-		drmp3_seek_to_pcm_frame(&decoder, 0); 
-
-		unsigned int i, j, k;
-		for (i = 0; i<mSampleCount; i += 512)
-		{
-			float tmp[512 * MAX_CHANNELS];
-			unsigned int blockSize = (mSampleCount - i) > 512 ? 512 : mSampleCount - i;
-			drmp3_read_pcm_frames_f32(&decoder, blockSize, tmp);
-			for (j = 0; j < blockSize; j++) 
-			{
-				for (k = 0; k < decoder.channels; k++) 
-				{
-					mData[k * mSampleCount + i + j] = tmp[j * decoder.channels + k];
-				}
-			}
-		}
-		drmp3_uninit(&decoder);
-#endif
-		return SO_NO_ERROR;
-	}
-
-	result Wav::loadflac(MemoryFile *aReader) {
-#ifndef DISABLE_MP3_WAV_FLAC
-		drflac *decoder = drflac_open_memory(aReader->mDataPtr, aReader->mDataLength, NULL);
-
-		if (!decoder)
-		{
-			return FILE_LOAD_FAILED;
-		}
-
-		drflac_uint64 samples = decoder->totalPCMFrameCount;
-
-		if (!samples)
-		{
-			drflac_close(decoder);
-			return FILE_LOAD_FAILED;
-		}
-
-		mData = new float[(unsigned int)(samples * decoder->channels)];
-		mBaseSamplerate = (float)decoder->sampleRate;
-		mSampleCount = (unsigned int)samples;
-		mChannels = decoder->channels;
-		drflac_seek_to_pcm_frame(decoder, 0);
-
-		unsigned int i, j, k;
-		for (i = 0; i < mSampleCount; i += 512)
-		{
-			float tmp[512 * MAX_CHANNELS];
-			unsigned int blockSize = (mSampleCount - i) > 512 ? 512 : mSampleCount - i;
-			drflac_read_pcm_frames_f32(decoder, blockSize, tmp);
-			for (j = 0; j < blockSize; j++)
-			{
-				for (k = 0; k < decoder->channels; k++)
-				{
-					mData[k * mSampleCount + i + j] = tmp[j * decoder->channels + k];
-				}
-			}
-		}
-		drflac_close(decoder);
-#endif
-		return SO_NO_ERROR;
-	}
+//	result Wav::loadmp3(MemoryFile *aReader) {
+//#ifndef DISABLE_MP3_WAV_FLAC
+//		drmp3 decoder;
+//
+//		if (!drmp3_init_memory(&decoder, aReader->getMemPtr(), aReader->length(), NULL))
+//		{
+//			return FILE_LOAD_FAILED;
+//		}
+//
+//		drmp3_uint64 samples = drmp3_get_pcm_frame_count(&decoder);
+//
+//		if (!samples)
+//		{
+//			drmp3_uninit(&decoder);
+//			return FILE_LOAD_FAILED;
+//		}
+//
+//		mData = new float[(unsigned int)(samples * decoder.channels)];
+//		mBaseSamplerate = (float)decoder.sampleRate;
+//		mSampleCount = (unsigned int)samples;
+//		mChannels = decoder.channels;
+//		drmp3_seek_to_pcm_frame(&decoder, 0); 
+//
+//		unsigned int i, j, k;
+//		for (i = 0; i<mSampleCount; i += 512)
+//		{
+//			float tmp[512 * MAX_CHANNELS];
+//			unsigned int blockSize = (mSampleCount - i) > 512 ? 512 : mSampleCount - i;
+//			drmp3_read_pcm_frames_f32(&decoder, blockSize, tmp);
+//			for (j = 0; j < blockSize; j++) 
+//			{
+//				for (k = 0; k < decoder.channels; k++) 
+//				{
+//					mData[k * mSampleCount + i + j] = tmp[j * decoder.channels + k];
+//				}
+//			}
+//		}
+//		drmp3_uninit(&decoder);
+//#endif
+//		return SO_NO_ERROR;
+//	}
+//
+//	result Wav::loadflac(MemoryFile *aReader) {
+//#ifndef DISABLE_MP3_WAV_FLAC
+//		drflac *decoder = drflac_open_memory(aReader->mDataPtr, aReader->mDataLength, NULL);
+//
+//		if (!decoder)
+//		{
+//			return FILE_LOAD_FAILED;
+//		}
+//
+//		drflac_uint64 samples = decoder->totalPCMFrameCount;
+//
+//		if (!samples)
+//		{
+//			drflac_close(decoder);
+//			return FILE_LOAD_FAILED;
+//		}
+//
+//		mData = new float[(unsigned int)(samples * decoder->channels)];
+//		mBaseSamplerate = (float)decoder->sampleRate;
+//		mSampleCount = (unsigned int)samples;
+//		mChannels = decoder->channels;
+//		drflac_seek_to_pcm_frame(decoder, 0);
+//
+//		unsigned int i, j, k;
+//		for (i = 0; i < mSampleCount; i += 512)
+//		{
+//			float tmp[512 * MAX_CHANNELS];
+//			unsigned int blockSize = (mSampleCount - i) > 512 ? 512 : mSampleCount - i;
+//			drflac_read_pcm_frames_f32(decoder, blockSize, tmp);
+//			for (j = 0; j < blockSize; j++)
+//			{
+//				for (k = 0; k < decoder->channels; k++)
+//				{
+//					mData[k * mSampleCount + i + j] = tmp[j * decoder->channels + k];
+//				}
+//			}
+//		}
+//		drflac_close(decoder);
+//#endif
+//		return SO_NO_ERROR;
+//	}
 
     result Wav::testAndLoadFile(MemoryFile *aReader)
     {
@@ -281,14 +281,14 @@ namespace SoLoud
         {
 			return loadwav(aReader);
 		}
-		else if (tag == MAKEDWORD('f', 'L', 'a', 'C'))
-		{
-			return loadflac(aReader);
-		}
-		else if (loadmp3(aReader) == SO_NO_ERROR)
-		{
-			return SO_NO_ERROR;
-		}
+		//else if (tag == MAKEDWORD('f', 'L', 'a', 'C'))
+		//{
+		//	return loadflac(aReader);
+		//}
+		//else if (loadmp3(aReader) == SO_NO_ERROR)
+		//{
+		//	return SO_NO_ERROR;
+		//}
 
 		return FILE_LOAD_FAILED;
     }

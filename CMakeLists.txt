@@ -6,7 +6,7 @@ project(soloud)
 #add_definitions(-DWITH_WASAPI)			# low latency
 add_definitions(-DWITH_XAUDIO2)
 
-add_definitions(-DDISABLE_MP3_WAV_FLAC)	# custom
+#add_definitions(-DDISABLE_MP3_WAV_FLAC)	# custom
 
 include_directories(
 	include
