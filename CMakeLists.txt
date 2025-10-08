@@ -2,34 +2,40 @@ cmake_minimum_required(VERSION 3.24)
 
 project(soloud)
 
-add_definitions(-DWITH_WINMM)
-#add_definitions(-DWITH_WASAPI)			# low latency
-#add_definitions(-DWITH_XAUDIO2)
-
-#add_definitions(-DDISABLE_MP3_WAV_FLAC)	# custom
-
 include_directories(
-	include
+		include
 )
 
 set(SOLOUD_SRCS)
-file(GLOB SOLOUD_SRCS
-	src/core/*.c*
-	src/filter/*.c*
-	src/audiosource/wav/*.c*
-	src/backend/winmm/*.c*
-	#src/backend/wasapi/*.c*
-	#src/backend/xaudio2/*.c*
-)
 
-add_library(soloud STATIC
-    ${SOLOUD_SRCS}
-)
-
-
-if(MSVC)
+if(WIN32)
+	add_definitions(-DWITH_WINMM)
+	#add_definitions(-DWITH_WASAPI)			# low latency but issue( un/replugin sound device will mute )
+	#add_definitions(-DWITH_XAUDIO2)
+	file(GLOB SOLOUD_SRCS
+			src/core/*.c*
+			src/filter/*.c*
+			src/audiosource/wav/*.c*
+			src/backend/winmm/*.c*
+			#src/backend/wasapi/*.c*
+			#src/backend/xaudio2/*.c*
+	)
 	add_compile_options($<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>)
 	target_compile_options(soloud PRIVATE
-		$<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>
+			$<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>
 	)
 endif()
+
+if(APPLE)
+	add_definitions(-DWITH_COREAUDIO)
+	file(GLOB SOLOUD_SRCS
+			src/core/*.c*
+			src/filter/*.c*
+			src/audiosource/wav/*.c*
+			src/backend/coreaudio/soloud_coreaudio.cpp
+	)
+endif()
+
+add_library(soloud STATIC
+		${SOLOUD_SRCS}
+)
