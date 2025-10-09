@@ -20,10 +20,6 @@ if(WIN32)
 			#src/backend/wasapi/*.c*
 			#src/backend/xaudio2/*.c*
 	)
-	add_compile_options($<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>)
-	target_compile_options(soloud PRIVATE
-			$<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>
-	)
 endif()
 
 if(APPLE)
@@ -39,3 +35,10 @@ endif()
 add_library(soloud STATIC
 		${SOLOUD_SRCS}
 )
+
+if(MSVC)
+	add_compile_options($<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>)
+	target_compile_options(soloud PRIVATE
+			$<$<PLATFORM_ID:Windows>:/MP${Biogears_BUILD_PARALLEL_LEVEL}>
+	)
+endif()
